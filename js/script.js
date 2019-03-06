@@ -21,6 +21,8 @@
 
 	//Iniciar o game
 	function startGame(){
+		//Embaralhando as cartas
+		images = randomSort(images);
 
 		//Colocando as div com a classe front em uma variavel
 		var frontFaces = document.getElementsByClassName("front");
@@ -44,6 +46,24 @@
 		}
 	}
 
+	//Embaralhando as cartas
+	function randomSort(oldArray){
+
+		var newArray = [];
+
+		while(newArray.length !== oldArray.length){
+			var i = Math.floor(Math.random()*oldArray.length);
+
+			if(newArray.indexOf(oldArray[i]) < 0){
+				newArray.push(oldArray[i]);
+			}
+		}
+
+		return newArray;
+
+	}
+
+	//Virar a carta
 	function flipCard(){
 		//Toggle vai adicionar a classe flipped se não existir e retirar ela causo exista
 		var faces = this.getElementsByClassName("face");
