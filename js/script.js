@@ -2,6 +2,7 @@
 	
 	//Array
 	var images=[];
+	var flippedCards=[];
 
 	for(var i=0; i < 16; i++){
 
@@ -65,10 +66,33 @@
 
 	//Virar a carta
 	function flipCard(){
-		//Toggle vai adicionar a classe flipped se não existir e retirar ela causo exista
-		var faces = this.getElementsByClassName("face");
-		faces[0].classList.toggle("flipped");
-		faces[1].classList.toggle("flipped");
-		console.log(faces[0]);
+		//Verifica se o array tem menos que dois objetos se tiver ele vira a carta clicada
+		//Se tiver mais de dois ele vira as duas cartas que já foram clicadas e limpa o array
+		if(flippedCards.length < 2){
+			
+			//Variavel que vai guardar todos os elementos com a tag de class face
+			var faces = this.getElementsByClassName("face");
+
+			//Se tiver mais de 3 classes significa que ela tem o flipped e já está virada
+			//vai impedir de ficar virando e desvirando a mesma carta
+			if(faces[0].classList.length > 2){
+				return;
+			}
+
+			//Toggle vai adicionar a classe flipped se não existir e retirar ela causo exista após clicar
+			faces[0].classList.toggle("flipped");
+			faces[1].classList.toggle("flipped");
+
+			//Adicionando a carta clicada ao array
+			flippedCards.push(this);
+		}else{
+
+			flippedCards[0].childNodes[1].classList.toggle("flipped");
+			flippedCards[0].childNodes[3].classList.toggle("flipped");
+			flippedCards[1].childNodes[1].classList.toggle("flipped");
+			flippedCards[1].childNodes[3].classList.toggle("flipped");
+
+			flippedCards=[];
+		}
 	}
 }());
