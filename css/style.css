@@ -5,6 +5,17 @@
 
 body{
 	background-color: black;
+	text-align: center;
+}
+
+#modalGameOver{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	/*RGB deixa transparente o "fundo"*/
+	background-color: rgb(0,0,0,0.5);
+	display: none;
 }
 
 #container{
@@ -14,6 +25,21 @@ body{
 	border-radius: 10px;
 	position: relative;
 	margin: 10px auto;
+}
+
+#imgGameOver{
+	width: 50%;
+}
+
+#imgMatchSign{
+    z-index: -1;
+	position: relative;
+	top: 250px;
+	/*Controla as animações*/
+	transition-property: top, opacity;
+	transition-duration: 2.5s;
+	opacity: 1;
+	
 }
 
 .card{
@@ -41,6 +67,7 @@ body{
 	background: url("../img/verso.jpg");
 }
 
+/*Controla as animações*/
 .back.flipped{
 	transform: rotateY(180deg);
 }
@@ -51,4 +78,13 @@ body{
 
 .front.flipped{
 	transform: rotate(0deg);
+}
+
+/*Insere borda em cartas combinadas*/
+.face.flipped.match{
+	box-shadow: 0 0 15px green;
+}
+
+#container{
+	background-color: black;
 }

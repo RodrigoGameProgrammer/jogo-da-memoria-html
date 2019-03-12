@@ -1,8 +1,13 @@
 (function(){
 	
 	//Array
-	var images=[];
-	var flippedCards=[];
+	var images = [];
+	var flippedCards = [];
+ 	
+ 	//Variavel que guarda o elemento com a id do modal
+	var modalGameOver = document.querySelector("#modalGameOver");
+	var imgMatchSign = document.querySelector("#imgMatchSign");
+	var matches = 0;
 
 	for(var i=0; i < 16; i++){
 
@@ -16,20 +21,26 @@
 		images.push(img);
 	}
 
-	console.log(images);
 	//Iniciando o game
 	startGame();
 
 	//Iniciar o game
 	function startGame(){
+		matches = 0;
+
+		flippedCards = [];
 		//Embaralhando as cartas
 		images = randomSort(images);
 
-		//Colocando as div com a classe front em uma variavel
+		//Colocando as div com a classe front/back em uma variavel
 		var frontFaces = document.getElementsByClassName("front");
+		var backFaces = document.getElementsByClassName("back");
 		
 		//Organizar as cartas
 		for(i=0; i < 16; i++){
+
+			frontFaces[i].classList.remove("flipped","match");
+			backFaces[i].classList.remove("flipped","match");
 
 			//querySelector igual a document.getElementById (mais rápido?)
 			var card = document.querySelector("#card" + i); 
@@ -45,6 +56,10 @@
 			//Pegando as imagens das div e setando um atributo id nelas
 			frontFaces[i].setAttribute("id",images[i].id);
 		}
+
+		//Após os comandos de iniciar o game, tiramos o modal da tela e tiramos o evento
+		modalGameOver.style.display = "none";
+		modalGameOver.removeEventListener("click",startGame,false);
 	}
 
 	//Embaralhando as cartas
@@ -85,6 +100,25 @@
 
 			//Adicionando a carta clicada ao array
 			flippedCards.push(this);
+
+			if(flippedCards.length === 2){
+				if(flippedCards[0].childNodes[3].id === flippedCards[1].childNodes[3].id){
+					flippedCards[0].childNodes[1].classList.toggle("match");
+					flippedCards[0].childNodes[3].classList.toggle("match");
+					flippedCards[1].childNodes[1].classList.toggle("match");
+					flippedCards[1].childNodes[3].classList.toggle("match");
+					
+					matchCardSign();
+
+					matches++;
+
+					flippedCards = [];
+
+					if(matches === 8){
+						gameOver();
+					}
+				}	
+			}
 		}else{
 
 			flippedCards[0].childNodes[1].classList.toggle("flipped");
@@ -92,7 +126,23 @@
 			flippedCards[1].childNodes[1].classList.toggle("flipped");
 			flippedCards[1].childNodes[3].classList.toggle("flipped");
 
-			flippedCards=[];
+			flippedCards = [];
 		}
+	}
+
+	function matchCardSign(){
+		imgMatchSign.style.zIndex = 1;
+		imgMatchSign.style.top = 150 + "px";
+		imgMatchSign.style.opacity =0;
+		setTimeout(function(){
+			imgMatchSign.style.zIndex = -1;
+			imgMatchSign.style.top = 250 + "px";
+			imgMatchSign.style.opacity = 1;
+		},2500);
+	}
+
+	function gameOver(){
+		modalGameOver.style.display = "block";
+		modalGameOver.addEventListener("click",startGame,false);
 	}
 }());
